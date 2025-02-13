@@ -1,0 +1,64 @@
+pipeline:
+  name: malyadri-ci-poc
+  identifier: malyadricipoc
+  projectIdentifier: ORCA_onedev
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: Malyadrigitrepo
+        build: <+input>
+  stages:
+    - stage:
+        name: source
+        identifier: source
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: GitClone
+                  name: GitClone_1
+                  identifier: GitClone_1
+                  spec:
+                    connectorRef: Malyadrigitrepo
+                    build:
+                      type: branch
+                      spec:
+                        branch: main
+    - stage:
+        name: test-cases
+        identifier: testcases
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Test
+                  name: Test_1
+                  identifier: Test_1
+                  spec:
+                    connectorRef: Malyadridocker
+                    image: python:3.9
+                    shell: Sh
+                    command: |
+                      pip install -r requirements.txt
+                      pytest tests/
+                    intelligenceMode: true
