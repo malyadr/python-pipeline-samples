@@ -60,5 +60,7 @@ pipeline:
                     shell: Sh
                     command: |
                       pip install -r requirements.txt
+                      coverage run -m pytest tests/
+                      coverage report
                       pytest tests/
                     intelligenceMode: true
